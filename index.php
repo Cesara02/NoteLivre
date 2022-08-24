@@ -12,6 +12,18 @@
 <body>
     <?php
         include("session.php");
+
+        if(isset($_SESSION['Connexion'])) {
+        ?>
+        <h1> Accueil </h1>
+        <div> Bienvenue <?php echo $TheUser->getLogin()?></div>
+        <?php
+            if($TheUser->isAdmin()) {
+                echo "👑 Vous êtes administrateur";
+            } else {
+                echo "👤 Vous êtes un simple membre";
+            }
+        }
     ?>
 </body>
 </html>

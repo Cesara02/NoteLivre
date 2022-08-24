@@ -21,13 +21,14 @@ $TheUser = new User(null, null, null);
     }
 
     if(isset($_POST['Deconnexion'])) {
-        // echo "Vous êtes déconnectez";
-        session_unset();
-        session_destroy();
+        $TheUser->seDeconnecter();
     }
 
     if(isset($_SESSION['Connexion']) && ($_SESSION['Connexion'] == true)) {
-        echo "Vous êtes déjà connecté !";
+        //echo "Vous êtes déjà connecté !";
+
+        $TheUser->setUserById($_SESSION['id']);
+
         ?>
         <form action = "" method = "POST">
             <input type = "submit" name = "Deconnexion" value = "Se deconnecter">
