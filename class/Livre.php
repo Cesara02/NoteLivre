@@ -13,16 +13,39 @@
         }
 
         public function saveInBdd() {
+            $titre = addslashes($this->titre_);
+            $auteur = addslashes($this->auteur_);
+            $lienImage = addslashes($this->lienImage_);
+
             if(is_null($this->id_)) {
-                $SQL = "INSERT INTO `Livre` (`titre`, `auteur`, `lienImage`) VALUES ('".$this->titre_."','".$this->auteur_."','".$this->lienImage_."')";
+                $SQL = "INSERT INTO `Livre` (`titre`, `auteur`, `lienImage`) VALUES ('".$titre."','".$auteur."','".$lienImage."')";
 
                 $result = $GLOBALS["pdo"]->query($SQL);
                 $this->id_ = $GLOBALS["pdo"]->lastInsertId();
+            } else {
+                echo "Le film avec l'id N°" .$this->id_. " va être update";
+
+                $titre = addslashes($this->titre_);
+                $auteur = addslashes($this->auteur_);
+                $lienImage = addslashes($this->lienImage_);
+
+                $SQL = "UPDATE `Livre` SET `titre`='".$titre."',`auteur`='".$auteur."',`lienImage`='".$lienImage."' WHERE `id` = '".$this->id_."'";
+
+                $result = $GLOBALS["pdo"]->query($SQL);
             }
         }
 
         public function setLivreById($id) {
+            $SQL = "SELECT * FROM `Livre` WHERE `id` = '".$id."'";
 
+            $result = $GLOBALS["pdo"]->query($SQL);
+            if($result->rowCount()>0) {
+                $tab = $result->fetch();
+                $this->id_ = $tab['id'];
+                $this->titre_ = $tab['titre'];
+                $this->auteur_ = $tab['auteur'];
+                $this->lienImage_ = $tab['lienImage'];
+            }
         }
 
         public function getAllLivre() {
@@ -43,6 +66,10 @@
             return $this->titre_;
         }
 
+        public function getId() {
+            return $this->id_;
+        }
+
         public function getAuteur() {
             return $this->auteur_;
         }
@@ -58,6 +85,22 @@
         public function getImage() {
             $imageHTML = '<img src = "'.$this->lienImage_.'" alt = "'.$this->titre_.'"/>';
             return $imageHTML;
+        }
+
+        public function getLienImage() {
+            return $this->lienImage_;
+        }
+
+        public function setTitre($titre) {
+            $this->titre_ = $titre;
+        }
+
+        public function setAuteur($auteur) {
+            $this->auteur_ = $auteur;
+        }
+
+        public function setLienImage($lienImage) {
+            $this->lienImage_ = $lienImage;
         }
     }
 ?>
