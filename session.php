@@ -1,6 +1,7 @@
 <?php session_start();
 
 include("./class/User.php");
+include("./class/Livre.php");
 
 $TheUser = new User(null, null, null);
 

@@ -24,6 +24,15 @@
                 echo "👤 Vous êtes un simple membre";
             }
         }
+
+        // Affichage des livres en BDD
+        $Livre = new Livre (null, null, null, null);
+        $tabLivres = $Livre->getAllLivre();
+        echo "<ul>";
+        foreach ($tabLivres as $Livre) {
+            $Livre->renderHTML();
+        }
+        echo "</ul>";
     ?>
 </body>
 </html>
