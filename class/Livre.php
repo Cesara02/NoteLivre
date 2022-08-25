@@ -12,6 +12,15 @@
             $this->lienImage_ = $lienImage;
         }
 
+        public function saveInBdd() {
+            if(is_null($this->id_)) {
+                $SQL = "INSERT INTO `Livre` (`titre`, `auteur`, `lienImage`) VALUES ('".$this->titre_."','".$this->auteur_."','".$this->lienImage_."')";
+
+                $result = $GLOBALS["pdo"]->query($SQL);
+                $this->id_ = $GLOBALS["pdo"]->lastInsertId();
+            }
+        }
+
         public function setLivreById($id) {
 
         }
