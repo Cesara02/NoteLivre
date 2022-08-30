@@ -23,7 +23,7 @@
                 $result = $GLOBALS["pdo"]->query($SQL);
                 $this->id_ = $GLOBALS["pdo"]->lastInsertId();
             } else {
-                echo "Le film avec l'id N°" .$this->id_. " va être update";
+                echo "Le livre avec l'id N°" .$this->id_. " va être update";
 
                 $titre = addslashes($this->titre_);
                 $auteur = addslashes($this->auteur_);
@@ -32,6 +32,15 @@
                 $SQL = "UPDATE `Livre` SET `titre`='".$titre."',`auteur`='".$auteur."',`lienImage`='".$lienImage."' WHERE `id` = '".$this->id_."'";
 
                 $result = $GLOBALS["pdo"]->query($SQL);
+            }
+        }
+
+        public function deleteInBdd() {
+            if(!is_null($this->id_)) {
+                $SQL = "DELETE FROM `Livre` WHERE id = '".$this->id_."'";
+                
+                $result = $GLOBALS["pdo"]->query($SQL);
+                echo "Le film ".$this->titre_." a été supprimé de la base de donnée.";
             }
         }
 
@@ -77,7 +86,9 @@
         public function renderHTML() {
             echo "<li>";
             echo $this->titre_;
+            echo "ㅤ";
             echo $this->auteur_;
+            echo "ㅤ";
             echo $this->getImage();
             echo "</li>";
         }
