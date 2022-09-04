@@ -1,49 +1,49 @@
-<?php session_start();
+<?php 
+    session_start();
 
-include("class/User.php");
-include("class/Livre.php");
+    include('class/User.php');
+    include('class/Livre.php');
 
-$TheUser = new User(null, null, null);
+    $TheUser = new User (null, null, null);
 
+    // CONNEXION BASE DE DONNEES
     try {
-        $ipserver = "localhost";
-        $nomBase = "NoteLivre";
-        $loginPrivilege = "Alexis";
-        $passwordPrivilege = "Alexis";
-
-        $GLOBALS["pdo"] = new PDO ('mysql:host='.$ipserver.';dbname='.$nomBase.'', $loginPrivilege, $passwordPrivilege);
-        // echo "Connexion à la base de donnée réussi ! ";
+        $GLOBALS["pdo"] = new PDO('mysql:host=mysql-bordrezcesar.alwaysdata.net;dbname=bordrezcesar_book', '256339', 'bordrez0908cesar2207');
+        // echo "Connexion à la base de donnée réussi !";
     } catch (Exception $e) {
         $e->getMessage();
+        // echo "Connexion à la base de donnée échoué !";
     }
 
-    if(isset($_POST['Connexion'])) {
-        $TheUser->seConnecter($_POST['login'], $_POST['password']);
+    // CONNEXION AU SITE
+    if(isset($_POST['connexion'])) {
+        $TheUser->seConnecter($_POST['login'], $_POST['pass']);
     }
 
-    if(isset($_POST['Deconnexion'])) {
+    // DECONNEXION
+    if(isset($_POST['deconnexion'])) {
         $TheUser->seDeconnecter();
     }
 
-    if(isset($_SESSION['Connexion']) && ($_SESSION['Connexion'] == true)) {
-        //echo "Vous êtes déjà connecté !";
+    if(isset($_SESSION['connexion']) && $_SESSION['connexion'] == true) {
+        // echo "Vous êtes déjà connecté";
 
-        $TheUser->setUserById($_SESSION['id']);
-
+        $TheUser->setUserByID($_SESSION['id']);
+        
         ?>
-        <form action = "" method = "POST">
-            <input type = "submit" name = "Deconnexion" value = "Se deconnecter">
+        <form action = "" method = "POST"> 
+            <input type = "submit" name = "deconnexion" value = "Se deconnecter"/>
         </form>
-        <a href = "page2.php"> 🚪 Accès à la page 2 </a>
+        
         <?php
-    } else {
-        echo "Veuillez vous identifier...";
+    } else { 
+        echo "Veuillez vous identifier";
         ?>
-        <form action = "" method = "POST">
-            Login : <input type = "text" name = "login" value = "Alexis">
-            Password : <input type = "password" name = "password" value = "Alexis">
-            <input type = "submit" name = "Connexion" value = "Se connecter">
+        <form action = "" method = "POST"> 
+            Login : <input type = "text" name = "login" value = "Alexis"/>
+            Password : <input type = "password" name = "pass" value = "Alexis"/>
+            <input type = "submit" name = "connexion"/>
         </form>
         <?php
     }
-?>
+?>  

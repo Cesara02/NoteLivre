@@ -1,38 +1,44 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>Accueil</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='CSS/main.css'>
-    <script src='main.js'></script>
 </head>
+
 <body>
-    <?php
-        include("session.php");
+    <?php include('session.php'); 
+    
+    if(isset($_SESSION['connexion'])) {
+    ?>
+        <div> Vous êtes connecté en tant que : <?php echo $TheUser->getLogin()?></div>
+        <div> <a href = "page2.php"> Vers la page 2 </a></div>
 
-        if(isset($_SESSION['Connexion'])) {
-        ?>
-        <h1> Accueil </h1>
-        <div> Bienvenue <?php echo $TheUser->getLogin()?></div>
-        <?php
-            if($TheUser->isAdmin()) {
-                echo "👑 Vous êtes administrateur";
-            } else {
-                echo "👤 Vous êtes un simple membre";
-            }
+        <?php if($TheUser->isAdmin()>0) {
+            echo "👑 Vous êtes sur une session administrateur";
+        } else {
+            echo "👤 Vous êtes un simple utilisateur";
         }
+    }
+    ?>
 
-        // Affichage des livres en BDD
-        $Livre = new Livre (null, null, null, null);
+    <?php 
+        // Affichage des livres en base
+        $Livre = new Livre (null, null, null, null, 0);
         $tabLivres = $Livre->getAllLivre();
         echo "<ul>";
-        foreach ($tabLivres as $Livre) {
-            $Livre->renderHTML();
+
+        foreach ($tabLivres as $livre) {
+            echo "<li>";
+            echo $livre->getTitre();
+            echo $livre->getAuteur();
+            echo $livre->getImage();
+            echo $livre->getMoyenneNote();
+            echo "</li>";
         }
         echo "</ul>";
-    ?>
+        ?>
 </body>
 </html>

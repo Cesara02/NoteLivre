@@ -1,60 +1,68 @@
 <?php 
     class User {
+        // Propriétés
         private $id_;
         private $login_;
-        private $idAdmin_ = false;
+        private $isAdmin_ = false;
 
+        // Constructeur 
         public function __construct($id, $login, $isAdmin) {
             $this->id_ = $id;
             $this->login_ = $login;
-            $this->idAdmin_ = $isAdmin;
+            $this->isAdmin_ = $isAdmin;
         }
 
-        public function seConnecter($login, $password) {
-            $SQL = "SELECT * FROM `User` WHERE `login` = '".$login."' AND `password` = '".$password."'";
+        public function seConnecter ($login, $password) {
+            $SQL = "SELECT * FROM `User` WHERE `login` = '".$login."' and `password` = '".$password."';";
 
             $result = $GLOBALS["pdo"]->query($SQL);
+
             if($result->rowCount()>0) {
-                // echo "✔️ Identifiants correct, vous êtes connectés...";
+                // echo "🔓 Identifiants corrects...";
+
                 $tab = $result->fetch();
-                $_SESSION['Connexion'] = true;
+                $_SESSION['connexion'] = true;
                 $_SESSION['id'] = $tab['id'];
-                
 
                 $this->id_ = $tab['id'];
                 $this->login_ = $tab['login'];
                 $this->isAdmin_ = $tab['isAdmin'];
-                
+
                 return true;
+
             } else {
-                // echo "❌ Identifiants incorrects ! Veuillez réessayez.";
+                // echo "🔒 Identifiants incorrects !";
+
                 return false;
             }
         }
 
-        public function setUserById($id) {
-            $SQL = "SELECT * FROM `User` WHERE `id` = '".$id."'";
-
-            $result = $GLOBALS["pdo"]->query($SQL);
-            if($result->rowCount()>0) {
-                $tab = $result->fetch();
-
-                $this->id_ = $tab['id'];
-                $this->login_ = $tab['login'];
-                $this->isAdmin_ = $tab['isAdmin'];
-                
-                return true;
-            } else {
-                return false;
-            }
-        }
-        
         public function seDeconnecter() {
-            // echo "Vous êtes déconnectez";
             session_unset();
             session_destroy();
         }
 
+        public function setUserByID($id) {
+            $SQL = "SELECT * FROM `User` WHERE `id` = '".$id."'";
+
+            $result = $GLOBALS["pdo"]->query($SQL);
+
+            if($result->rowCount()>0) {
+
+                $tab = $result->fetch();
+
+                $this->id_ = $tab['id'];
+                $this->login_ = $tab['login'];
+                $this->isAdmin_ = $tab['isAdmin'];
+
+                return true;
+
+        } else {
+            return false;
+        }
+    }
+
+        // Accesseurs
         public function isAdmin() {
             return $this->isAdmin_;
         }
@@ -63,4 +71,6 @@
             return $this->login_;
         }
     }
+
+
 ?>
